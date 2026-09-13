@@ -89,47 +89,6 @@ class PrimaryCapsuleChannelAttention(nn.Module):
         return out
 
 
-class MultiheadAttention(nn.Module):
-
-
-    def __init__(self, capsule_dim=8, num_heads=4, dropout=0.1):
-        super(MultiheadAttention, self).__init__()
-        assert capsule_dim % num_heads == 0, "capsule_dim 必须能被 num_heads 整除"
-
-        self.mha = nn.MultiheadAttention(embed_dim=capsule_dim, num_heads=num_heads, dropout=dropout, batch_first=False)
-        self.norm = nn.LayerNorm(capsule_dim)
-        self.dropout = nn.Dropout(dropout)
-        self.ffn = nn.Sequential(
-            nn.Linear(capsule_dim, capsule_dim * 2),
-            nn.ReLU(inplace=True),
-            nn.Linear(capsule_dim * 2, capsule_dim)
-        )
-
-    def forward(self, primary_capsules):
-
-        x = primary_capsules
-
-
-        attn_output, _ = self.mha(x, x, x)
-
-
-        x = self.norm(x + self.dropout(attn_output))
-
-
-        ffn_output = self.ffn(x)
-        x = self.norm(x + self.dropout(ffn_output))
-
-
-        x = self.squash(x)
-
-        return x
-
-    def squash(self, input_tensor):
-        squared_norm = (input_tensor ** 2).sum(-1, keepdim=True)
-        output_tensor = squared_norm *  input_tensor / ((1. + squared_norm) * torch.sqrt(squared_norm))
-        return output_tensor
-
-
 class DigitCaps(nn.Module):
     def __init__(self, num_capsules=2, num_routes=8*24*24, in_channels=8, out_channels=32):
         super(DigitCaps, self).__init__()
@@ -232,7 +191,6 @@ class CapsNet(nn.Module):
         self.decoder = Decoder()
         self.mse_loss = nn.MSELoss()
         self.channel_attention = PrimaryCapsuleChannelAttention(capsule_dim=Primary_capsule_num,reduction_ratio=2)
-        self.multiheadattention = MultiheadAttention(capsule_dim=Primary_capsule_num, num_heads=4, dropout=0.1)
 
 
     def forward(self, data):
