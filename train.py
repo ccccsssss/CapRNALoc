@@ -10,7 +10,7 @@ from sklearn.metrics import auc, confusion_matrix, classification_report, matthe
 from sklearn.metrics import roc_auc_score, precision_score, recall_score
 from sklearn.model_selection import StratifiedKFold
 from torch.utils.data import DataLoader, TensorDataset
-import model
+import circRNA_model
 import pandas as pd
 import copy
 import os
