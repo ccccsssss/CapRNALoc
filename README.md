@@ -1,4 +1,4 @@
-# CapsBAM_ac4C
+# CapsRNALoc
 
 ---
 
