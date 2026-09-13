@@ -11,7 +11,7 @@ import torch.nn.functional as F
 import pandas as pd
 import random
 import os
-import model
+import circRNA_model
 
 
 def set_seed(seed=42):
