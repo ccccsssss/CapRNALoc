@@ -20,13 +20,16 @@ def set_seed(seed=42):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
-    torch.backends.cudnn.deterministic = True 
-    torch.backends.cudnn.benchmark = False     
 
-set_seed(42) 
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
 
-USE_CUDA = True
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+set_seed(42)
+
+USE_CUDA = torch.cuda.is_available()
 batch_size = 64
 n_epochs = 12
 best_num_cap = 16
