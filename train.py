@@ -10,7 +10,7 @@ from sklearn.metrics import auc, confusion_matrix, classification_report, matthe
 from sklearn.metrics import roc_auc_score, precision_score, recall_score
 from sklearn.model_selection import StratifiedKFold
 from torch.utils.data import DataLoader, TensorDataset
-import circRNA_model
+import lncRNA_model as model
 import pandas as pd
 import copy
 import os
@@ -28,9 +28,9 @@ n_epochs = 70
 res = 64
 save_dir = "./saved_models"
 os.makedirs(save_dir, exist_ok=True)
-best_model_path = os.path.join(save_dir, "best_model_lnc_wochannel.pth")
+best_model_path = os.path.join(save_dir, "best_model_lnc.pth")
 
-fig = pd.read_csv("/home/scao/CGR/Datasets/feature/lncTrain_rev.txt")
+fig = pd.read_csv("./Datasets")
 
 X_forward, X_reverse = [], []
 
