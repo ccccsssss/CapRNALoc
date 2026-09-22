@@ -18,7 +18,7 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 
-import cicr_model as model
+import cicrRNA_model as model
 
 
 
